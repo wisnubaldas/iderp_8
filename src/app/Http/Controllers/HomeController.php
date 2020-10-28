@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Admin\MenuModule;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $breadcrumb = self::breadcrumb();
+        return view('home',compact('breadcrumb'));
+    }
+    protected static function breadcrumb()
+    {
+        return [
+            'title'=>'Module IDERP',
+            'breadcrumb'=>['home','module'],
+            'action'=>['link'=>'#','title'=>'Get Module']
+        ];
     }
 }

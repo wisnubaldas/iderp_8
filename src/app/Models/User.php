@@ -40,4 +40,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function modules()
+    {
+        return $this->belongsToMany('App\Models\Admin\MenuModule','user_module')->using('App\Models\Admin\UserModule');
+    }
 }
