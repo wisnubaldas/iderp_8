@@ -45,7 +45,7 @@
                     <a href="{{url($i->url)}}">
                         <i class="{{$i->icon}}"></i> 
                             <span class="nav-label">{{$i->title}}</span>
-                            <span class="fa arrow"></span>
+                            {{-- <span class="fa arrow"></span> --}}
                     </a>
                 </li>
                 @endif

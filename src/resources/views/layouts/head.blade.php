@@ -5,5 +5,4 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ url('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ url('css/all.css') }}" rel="stylesheet">
-    <livewire:styles />
 </head>

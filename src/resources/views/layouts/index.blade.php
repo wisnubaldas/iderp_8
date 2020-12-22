@@ -12,7 +12,6 @@
         </div>
     </div>
     <script src="{{ url('js/all.js') }}"></script>
-    <livewire:scripts />
     <script>
         jQuery(function(a){
             $(".module-bg").mouseenter(function() {

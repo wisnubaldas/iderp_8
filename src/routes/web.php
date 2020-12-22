@@ -18,6 +18,28 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-include __DIR__ . '/custom_route/home.php';
-include __DIR__ . '/custom_route/dashboard.php';
-include __DIR__ . '/custom_route/survey.php';
+// include __DIR__ . '/custom_route/home.php';
+// include __DIR__ . '/custom_route/dashboard.php';
+// include __DIR__ . '/custom_route/survey.php';
+
+// Auth::routes();
+
+Route::group(['middleware' => ['auth','menu']], function () {
+    include_route_files(__DIR__.'/custom_route/');
+});
+
+function include_route_files($folder)
+{
+    try {
+        $rdi = new RecursiveDirectoryIterator($folder);
+        $it = new RecursiveIteratorIterator($rdi);
+        while ($it->valid()) {
+            if (! $it->isDot() && $it->isFile() && $it->isReadable() && $it->current()->getExtension() === 'php') {
+                require $it->key();
+            }
+            $it->next();
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
