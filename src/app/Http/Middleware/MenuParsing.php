@@ -28,6 +28,7 @@ class MenuParsing
         ];
         if ($request->is('dashboard/*')) {
             $modul = Crypt::decryptString($request->segment(2));
+            $request->session()->put('user.modul',$modul);
             $menu = MenuModule::with('menus')->where('name',$modul)->first();
             if($menu->menus->count() !== 0)
             {

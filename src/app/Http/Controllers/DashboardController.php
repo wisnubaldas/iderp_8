@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class DashboardController extends Controller
 {
@@ -13,15 +14,15 @@ class DashboardController extends Controller
      */
     public function index(Request $request,$dasboard)
     {
-        $breadcrumb = self::breadcrumb();
+        $breadcrumb = self::breadcrumb($dasboard);
         return view('dashboard',compact('breadcrumb'));
     }
-    protected static function breadcrumb()
+    protected static function breadcrumb($dasboard)
     {
+        $module = Crypt::decryptString($dasboard);
         return [
-            'title'=>'Module IDERP',
-            'breadcrumb'=>['home','module'],
-            'action'=>['link'=>'#','title'=>'Get Module']
+            'title'=>'Dashboard Module ',
+            'breadcrumb'=>['Dashboard',$module],
         ];
     }
     /**

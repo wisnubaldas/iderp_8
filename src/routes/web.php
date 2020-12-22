@@ -20,3 +20,4 @@ Route::get('/', function () {
 Auth::routes();
 include __DIR__ . '/custom_route/home.php';
 include __DIR__ . '/custom_route/dashboard.php';
+include __DIR__ . '/custom_route/survey.php';

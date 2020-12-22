@@ -6,7 +6,7 @@
             @include('layouts.error',['title'=>'Anda tidak terdaftar di modul IDERP'])
         @else
         @foreach ($master['modul'] as $v)
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <div class="widget style1 navy-bg module-bg">
                 <a href="{{route('dashboard',Crypt::encryptString($v->name))}}" class="text-white">
                 <div class="row vertical-align">

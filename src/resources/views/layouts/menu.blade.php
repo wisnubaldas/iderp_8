@@ -3,7 +3,7 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <img alt="image" class="rounded-circle" src="img/profile_small.jpg"/>
+                    <img alt="image" class="rounded-circle" src="{{url('img/profile_small.jpg')}}"/>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="block m-t-xs font-bold">{{ Auth::user()->name }}</span>
                         <span class="text-muted text-xs block">{{ Auth::user()->email }} <b class="caret"></b></span>
@@ -28,21 +28,28 @@
             <li class="special_link">
                 <a href="/"><i class="fa fa-database"></i> <span class="nav-label">Home</span></a>
             </li>
-            {{-- <li class="active">
-                <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Other Pages</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="search_results.html">Search results</a></li>
-                    <li><a href="lockscreen.html">Lockscreen</a></li>
-                    <li><a href="invoice.html">Invoice</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="login_two_columns.html">Login v.2</a></li>
-                    <li><a href="forgot_password.html">Forget password</a></li>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="404.html">404 Page</a></li>
-                    <li><a href="500.html">500 Page</a></li>
-                    <li class="active"><a href="empty_page.html">Empty page</a></li>
-                </ul>
-            </li> --}}
+            @foreach ($master['menu'] as $i)
+                @if (isset($i->childs))
+                    <li>
+                        <a href="{{$i->url}}">
+                            <i class="{{$i->icon}}"></i> 
+                                <span class="nav-label">{{$i->title}}</span>
+                                <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            @include('layouts.menu-childs',['childs' => $i->childs])
+                        </ul>
+                    </li>
+                @else
+                <li>
+                    <a href="{{url($i->url)}}">
+                        <i class="{{$i->icon}}"></i> 
+                            <span class="nav-label">{{$i->title}}</span>
+                            <span class="fa arrow"></span>
+                    </a>
+                </li>
+                @endif
+            @endforeach
         </ul>
     </div>
 </nav>

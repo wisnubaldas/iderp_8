@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-         <h2>{{ ucfirst($breadcrumb['title']) }}</h2>
+    <h2>{{ ucfirst($breadcrumb['title']) }} {{session('user.modul')}}</h2>
         <ol class="breadcrumb">
             @foreach ($breadcrumb['breadcrumb'] as $item)
                 @if ($loop->last)
