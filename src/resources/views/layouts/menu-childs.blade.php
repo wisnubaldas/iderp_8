@@ -1,6 +1,6 @@
 @foreach($childs as $child)
     @if(isset($child->childs))
-        <li>
+        <li class="{{isset($active)?'active':''}}">
             <a href="{{$child->url}}">
                 <i class="{{$child->icon}}"></i> 
                     <span class="nav-label">{{$child->title}}</span>
@@ -11,7 +11,7 @@
             </ul>
         </li>
     @else
-        <li>
+        <li class="{{isset($active)?'active':''}}">
             <a href="{{url($child->url)}}">
                 {{$child->title}}
             </a>

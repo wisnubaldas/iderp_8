@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -36,5 +39,17 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function authenticate(Request $request)
+    {
+        // dd($request->ips());
+        // dump($request->getSession());
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => 1])) {
+            // The user is active, not suspended, and exists.
+            $request->session()->regenerate();
+            return redirect()->intended('home');
+        }else{
+            return back();
+        }
     }
 }

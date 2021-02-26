@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\AcuraMaster\Depo;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Auth;
 class RegisterController extends Controller
 {
     /*
@@ -29,8 +30,14 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo()
+    {
+        if (auth()->user()->active == 0) {
+            Auth::logout();
+            return '/terimakasih';
+        }
+    }
     /**
      * Create a new controller instance.
      *
@@ -53,6 +60,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'm_depo_id' => ['required', 'string'],
+            'igree'=>['accepted'],
         ]);
     }
 
@@ -68,6 +77,16 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'm_depo_id' => intval($data['m_depo_id']),
         ]);
+    }
+    public function all_depo()
+    {
+        return Depo::all();
+    }
+    
+    public function terimakasih()
+    {
+        return view('auth.terimakasih');
     }
 }

@@ -20,25 +20,34 @@ class MenuParsing
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = User::with('modules')->find(Auth::user()->id);
-        $master = [
-            'menu'=>[],
-            'modul'=>$user->modules,
-            'animate'=>self::animate(['fadeInRightBig','fadeInLeftBig','fadeInDownBig','fadeInUpBig'])
-        ];
-        if ($request->is('dashboard/*')) {
-            $modul = Crypt::decryptString($request->segment(2));
-            $request->session()->put('user.modul',$modul);
-            $menu = MenuModule::with('menus')->where('name',$modul)->first();
-            if($menu->menus->count() !== 0)
-            {
-                $master['menu'] = self::buildTreeFromObjects($menu->menus);
-            }
-            // view()->share('master',$master);
-            // return $next($request);
-        }
-        view()->share('master',$master);
-        return $next($request);
+        // $user = User::with('modules')->find(Auth::user()->id);
+        // $master = [
+        //     'menu'=>[],
+        //     'modul'=>$user->modules,
+        //     'animate'=>self::animate(['fadeInRightBig','fadeInLeftBig','fadeInDownBig','fadeInUpBig'])
+        // ];
+        // if ($request->is('dashboard/*')) {
+        //     $modul = Crypt::decryptString($request->segment(2));
+        //     $request->session()->put('user.modul',$modul);
+        //     $menu = MenuModule::with('menus')->where('name',$modul)->first();
+        //     if($menu->menus->count() !== 0)
+        //     {
+        //         $master['menu'] = self::buildTreeFromObjects($menu->menus);
+        //     }
+        //     view()->share('master',$master);
+        //     return $next($request);
+        // }else{
+        //     $modul = $request->session()->get('user.modul');
+        //     if($modul)
+        //     {
+        //         $menu = MenuModule::with('menus')->where('name',$modul)->first();
+        //         $master['menu'] = self::buildTreeFromObjects($menu->menus);
+        //         view()->share('master',$master);
+        //         return $next($request);
+        //     }
+            return $next($request);
+        // }
+        
     }
     private static function animate($animate)
     {

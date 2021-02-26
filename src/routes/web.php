@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Library\MyHelper;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,29 +17,11 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
+Route::get('/all_depo',[App\Http\Controllers\Auth\RegisterController::class, 'all_depo']);
+Route::get('/terimakasih',[App\Http\Controllers\Auth\RegisterController::class, 'terimakasih']);
+
 Auth::routes();
-// include __DIR__ . '/custom_route/home.php';
-// include __DIR__ . '/custom_route/dashboard.php';
-// include __DIR__ . '/custom_route/survey.php';
-
-// Auth::routes();
-
+Route::post('/login',[App\Http\Controllers\Auth\LoginController::class, 'authenticate']);
 Route::group(['middleware' => ['auth','menu']], function () {
-    include_route_files(__DIR__.'/custom_route/');
+    MyHelper::include_route_files(__DIR__.'/custom_route/');
 });
-
-function include_route_files($folder)
-{
-    try {
-        $rdi = new RecursiveDirectoryIterator($folder);
-        $it = new RecursiveIteratorIterator($rdi);
-        while ($it->valid()) {
-            if (! $it->isDot() && $it->isFile() && $it->isReadable() && $it->current()->getExtension() === 'php') {
-                require $it->key();
-            }
-            $it->next();
-        }
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
-}

@@ -30,7 +30,7 @@
             </li>
             @foreach ($master['menu'] as $i)
                 @if (isset($i->childs))
-                    <li>
+                    <li >
                         <a href="{{$i->url}}">
                             <i class="{{$i->icon}}"></i> 
                                 <span class="nav-label">{{$i->title}}</span>
@@ -41,7 +41,7 @@
                         </ul>
                     </li>
                 @else
-                <li>
+                <li >
                     <a href="{{url($i->url)}}">
                         <i class="{{$i->icon}}"></i> 
                             <span class="nav-label">{{$i->title}}</span>

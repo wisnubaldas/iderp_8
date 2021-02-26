@@ -1,5 +1,6 @@
 @extends('layouts.index')
 @section('content')
+
 <div class="wrapper wrapper-content animated {{ $master['animate'] }}">
     <div class="row">
         @if (count($master['modul']) == 0)
