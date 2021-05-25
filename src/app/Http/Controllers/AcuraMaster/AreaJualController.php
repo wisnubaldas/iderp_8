@@ -59,4 +59,5 @@ class AreaJualController extends Controller
         return back();
     }
     
+    
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Coa extends Model
 {
     // protected $connection = 'cost';
-    protected $table = 'm_coa';
+    protected $table = 'coa';
     // protected $primaryKey = 'coa_id';
     // protected $timestamp = false;
 
@@ -17,7 +17,7 @@ class Coa extends Model
     // ];
     public function depo()
     {
-        return $this->belongsToMany(Depo::class)->using(CoaDepo::class)->withPivot('coa_id', 'depo_id');
+        return $this->belongsToMany(Depo::class)->using(CoaDepo::class);
     }
     
 }

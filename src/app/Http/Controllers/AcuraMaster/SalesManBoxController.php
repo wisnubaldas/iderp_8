@@ -27,6 +27,8 @@ class SalesManBoxController extends Controller
         $sal = SalesBox::with(['salesman'=>function($q){
                 return $q->with('depo');
         }])->select($this->head_salesman);
+        // return  SalesBox::with(['salesman'])->first();
+        
         return DataTables::eloquent($sal)
                         ->addColumn('action', function ($man) {
                              $r = '<div class="btn-group">';

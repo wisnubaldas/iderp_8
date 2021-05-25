@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     protected function user_grid()
     {
-        $users = User::select(['id','name','email','updated_at','m_depo_id','active']);
+        $users = User::select(['id','name','email','updated_at','depo_id','active']);
         return Datatables::of($users)
         ->addColumn('action', function ($user) {
             $button = '<div class="btn-group">';

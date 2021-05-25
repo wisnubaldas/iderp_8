@@ -32,7 +32,7 @@ class SalesManController extends Controller
     }
     public function grid()
     {
-        $query =  Salesman::with('depo')->select('m_salesman.*');
+        $query =  Salesman::with('depo')->select('salesman.*');
         return DataTables::eloquent($query)
                             ->addColumn('action', function ($man) {
                                     $r = '<div class="btn-group">';

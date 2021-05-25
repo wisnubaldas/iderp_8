@@ -8,33 +8,29 @@ use App\Models\AcuraMaster\Coa;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CoaImport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use DataTables;
 class CoaController extends Controller
 {
+    public $userDepo;
     public function index($coa = null)
     {
+        $this->userDepo = auth()->user()->m_depo_id;
         if($coa)
         {
             return $this->grid($coa);
         }
-        $coas =Coa::all()->toArray();
-        // $tree = $this->buildTreeFromObjects($coas);
+        $coas =Coa::whereHas('depo', function (Builder $query) {
+            if($this->userDepo){
+                return $query->where('m_depo.id', '=', $this->userDepo);
+            }
+            return $query;
+        })->get()->toArray();
         $tree = $this->buildTree($coas);
 
-
-        // foreach ($coa->m_depo as $depo) {
-        //     dump($depo);
-        // }
-        // $user = Auth::user();
-        // dd($user);
         return view('backend.master-acura.coa')
                     ->with('tree',$tree)
                     ->with('pageTitle',['name'=>'General Leadger','link'=>'#']);
-        
-
-        // $this->import_coa();
-        // echo "suksess...";
-          
     }
     public function check_id($id)
     {
@@ -72,7 +68,11 @@ class CoaController extends Controller
     }
     protected function grid($coa)
     {
-        
-        return Coa::with(['depo'])->where('coa_id',$coa)->get();
+        return Coa::with(['depo'=>function($query){
+            if($this->userDepo){
+                return $query->where('m_depo.id',$this->userDepo);
+            }
+            return $query;
+        }])->where('coa_id',$coa)->get();
     }
 }

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // SalesmanSeed::class,
             // SalesmanBoxSeed::class,
+            // AreaJualSeed::class,
         ]);
     }
 }

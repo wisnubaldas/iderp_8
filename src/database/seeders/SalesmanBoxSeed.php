@@ -26,7 +26,7 @@ class SalesmanBoxSeed extends Seeder
 
             $depoId = Depo::where('nama_depo',ucwords($value))->first();
             foreach ($data as $x) {
-                $salesman_id = Salesman::where('m_depo_id',$depoId->id)->where('id_sales',$x[0])->first();
+                $salesman_id = Salesman::where('depo_id',$depoId->id)->where('id_sales',$x[0])->first();
                 if($salesman_id)
                 {
                     $sal_box = new SalesBox;
