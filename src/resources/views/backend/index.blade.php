@@ -15,11 +15,9 @@
 
     <link href="{{asset('css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
     @stack('css')
+    <link href="{{asset('css/plugins/select2/select2.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
-    
-
-   
 </head>
 
 <body class="top-navigation">
@@ -65,7 +63,7 @@
         </div>
         <div class="footer">
             <div class="float-right">
-                10GB of <strong>250GB</strong> Free.
+                 <strong>250GB</strong> .
             </div>
             <div>
                 <strong>Copyright</strong> Example Company &copy; 2014-2018

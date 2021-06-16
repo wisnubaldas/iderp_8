@@ -169,6 +169,7 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Cedextech\TraitGenerator\ServiceProvider::class,
         /*
          * Application Service Providers...
          */

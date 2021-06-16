@@ -1,52 +1,88 @@
-@extends('backend.index')
+@extends('auth.layouth')
+
+@section('title', 'Register')
 @section('content')
-<div class="container">
-    <a href="{{url('/system/user_manager')}}" class="btn btn-primary">Back to User</a>
-    <hr class="border">
-    <div class="col-lg-12">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>Create User</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <form>
-                    <p>Sign in today for more expirience.</p>
-                    <div class="form-group row"><label class="col-lg-2 col-form-label">Email</label>
-
-                        <div class="col-lg-10"><input type="email" placeholder="Email" class="form-control"> <span class="form-text m-b-none">Example block-level help text here.</span>
-                        </div>
-                    </div>
-                    <div class="form-group row"><label class="col-lg-2 col-form-label">Password</label>
-
-                        <div class="col-lg-10"><input type="password" placeholder="Password" class="form-control"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-lg-offset-2 col-lg-10">
-                            <div class="i-checks"><label> <input type="checkbox"><i></i> Remember me </label></div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-lg-offset-2 col-lg-10">
-                            <button class="btn btn-sm btn-white" type="submit">Sign in</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div class="middle-box text-center loginscreen   animated fadeInDown">
+    <div>
+        <div>
+            <h1 class="logo-name">CJFI</h1>
         </div>
+        <h3>Welcome to Accura Web Apps</h3>
+        <form class="m-t" role="form" method="POST" action="{{ url('system/save-user') }}">
+            @csrf
+            <div class="form-group">
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nama">
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+            </div>
+            <div class="form-group">
+                    <div class="checkbox i-checks"><label> <input type="checkbox" name="igree"><i></i> Agree the terms and policy </label></div>
+                    @error('igree')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+            <button
+            data-sitekey="reCAPTCHA_site_key" 
+            data-callback='onSubmit' 
+            data-action='submit' type="submit" class=" g-recaptcha btn btn-primary block full-width m-b">Register</button>
+            
+            <a href="{{url('/system/user_manager')}}" class="btn btn-success btn-block">Back to User</a>
+        </form>
+        <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
     </div>
 </div>
-    
+
 @endsection
-@push('script')
-    <script>
-         
-    </script>
-@endpush
+@section('script')
+<script src="{{asset('js/plugins/iCheck/icheck.min.js')}}"></script>
+<script>
+    function onSubmit(token) {
+     document.getElementById("demo-form").submit();
+   }
+
+    $(document).ready(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        $.ajax({
+            method: "GET",
+            url: '/all_depo',
+            }).done(function( msg ) {
+                const depo_opt = msg.map(function(a){
+                    return `<option value="${a.id}">${a.nama_depo}</option>`
+                })
+
+            $('#depo').append(depo_opt);
+            
+        }).fail(function(a){
+               console.log(a)
+        });
+    });
+</script>
+@endsection

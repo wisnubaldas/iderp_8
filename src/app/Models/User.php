@@ -48,4 +48,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Models\Admin\MenuModule','user_module')->using('App\Models\Admin\UserModule');
     }
+    public function evaluasi_kerja()
+    {
+        return $this->hasOne(\App\Models\Report\EvaluasiKerja::class);
+    }
 }

@@ -6,52 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AcuraMaster\Depo;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Hash;
+use App\Traits\UserTrait;
 use DataTables;
 class UserController extends Controller
 {
-    protected function user_grid()
-    {
-        $users = User::select(['id','name','email','updated_at','depo_id','active']);
-        return Datatables::of($users)
-        ->addColumn('action', function ($user) {
-            $button = '<div class="btn-group">';
-            $button .= '<a href="#edit-'.$user->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-            $button .= '<a href="#delete-'.$user->id.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Delete</a>';
-            $button .= '</div>';
-            return $button;
-        })
-        ->editColumn('m_depo_id',function($user){
-                $depo = Depo::find($user->m_depo_id);
-                if($depo){
-                    return $depo->nama_depo;
-                }
-                return 'Tidak ada depo';
-        })
-        ->editColumn('active', function($user){
-                if($user->active == 1)
-                {
-                    $cek = 'checked';
-                }else{
-                    $cek = '';
-                }
-                return '<div class="switch">
-                <div class="onoffswitch">
-                    <input type="checkbox" '.$cek.' class="onoffswitch-checkbox" data-user="'.$user->id.'" id="edit-'.$user->id.'" data-active="'.$user->active.'" onchange="handleChange(this);">
-                    <label class="onoffswitch-label" for="edit-'.$user->id.'">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
-                </div>
-            </div>';
-        })
-        ->rawColumns(['active','action'])
-        ->make();
+    use UserTrait;
+    
+    public function __construct() {
+        $this->get_option();
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index($grid = null)
     {
         if($grid)
@@ -61,50 +27,7 @@ class UserController extends Controller
         return view('backend.system.user');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
     public function add_user()
     {
         return view('backend.system.user_add');
@@ -118,5 +41,64 @@ class UserController extends Controller
             $user->active = 0;
         }
         $user->save();
+    }
+    public function add_role(Request $request)
+    {
+        if($request->isMethod('POST'))
+        {
+            $request->validate([
+                'role'=>'required'
+            ]);
+
+            Role::create(['name'=>$request->role]);
+            return back();
+        }
+        $role_permission = Role::with('permissions')->get();
+        $role = Role::pluck('name', 'id');
+        $permission = Permission::pluck('name','id');
+        return view('backend.system.role',compact('role','role_permission','permission'));
+    }
+    public function delete_role($id)
+    {
+        Role::find($id)->delete();
+        return back();
+    }
+    public function add_permission(Request $request)
+    {
+        if($request->isMethod('POST'))
+        {
+            $request->validate([
+                'permission'=>'required'
+            ]);
+            Permission::create(['name'=>$request->permission]);
+            return back();
+        }
+        $per = Permission::pluck('name', 'id');
+        return view('backend.system.permission',compact('per'));
+    }
+    public function delete_permission($id)
+    {
+        Permission::find($id)->delete();
+        return back();
+    }
+    // sync role and permision
+    public function async_can($id_role,$method,$id_permission)
+    {
+        $this->syncron_role_permission($id_role,$method,$id_permission);
+        return back();
+    }
+    public function save_user(Request $request)
+    {
+         User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return back();
+    }
+    public function delete_user($id)
+    {
+        User::find($id)->delete();
+        return back();
     }
 }

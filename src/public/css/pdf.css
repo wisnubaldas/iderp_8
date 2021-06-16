@@ -1,0 +1,50 @@
+.page-break {
+    page-break-after: always;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+.text-center{
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.text-bold {
+    font-weight: bold;
+}
+.text-italic{
+    font-style: italic;
+}
+.text-space {
+        display:inline-block; 
+       margin-left: 40px; 
+}
+.text-2x {
+    font-size: 30px;
+}
+.saran {
+    margin: 2px;
+    float: left;
+}
+.penjelasan {
+    margin: 5px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    /* margin: 5px; */
+    padding: 5px;
+    /* width: 100%; */
+  }
+.sumary{
+    border: none;
+}
+.sumary td{
+    border: none;
+}
+.tbl-abc {
+    text-align: center;
+    margin: 5px;
+    padding: 5px;
+}
